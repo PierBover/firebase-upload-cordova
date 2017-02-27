@@ -26,7 +26,7 @@ To compile and run the `.apk` on a connected device:
 
 ### More about the error
 
-The problem only occurs when the selected file is on Google drive. When selecting a file from the downloads folder it works fine. Also, when uploading a file from Drive using the browser it works fine. It seem the problem is a combination between the Firebase API, and Google Drive.
+The problem only occurs when the selected file is on Google drive. When selecting a file from the downloads folder it works fine. Also, when uploading a file from Drive using the browser it works fine. It seems the problem is a combination between the Firebase API, and Google Drive.
 
 When remote debugging with Chrome the error message is:
 ```
