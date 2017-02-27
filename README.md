@@ -1,6 +1,6 @@
 This is a Cordova test project to reproduce a bug when uploading files to Firebase using the WEB SDK on Android with an `<input type="file">`.
 
-### Reproducing the error
+### Running the project
 
 There is an `.apk` file in `./FirebaseUpload/platforms/android/build/outputs/apk/android-debug.apk`.
 
@@ -24,9 +24,14 @@ To compile and run the `.apk` on a connected device:
 2. `cd FirebaseUpload`
 3. `cordova run android --device`
 
-### More about the error
+### Reproducing the error
+Run the app in your Android device. Select a file to upload and wait.
 
-The problem only occurs when the selected file is on Google drive. When selecting a file from the downloads folder it works fine. Also, when uploading a file from Drive using the browser it works fine. It seems the problem is a combination between the Firebase API, and Google Drive.
+When selectting a file from the downloads folder ir runs fine.
+
+When selecting a file from the Drive folder the error will show up (even when the file is downloaded and available for offline use).
+
+When uploading a file from the Drive folder to some website using the browser it works fine. For example to `www.imgur.com` It seems the problem is in the Firebase Web SDK.
 
 When remote debugging with Chrome the error message is:
 ```
