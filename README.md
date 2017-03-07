@@ -1,3 +1,13 @@
+# I solved it!
+
+The solution was to use `FileReader` and convert the file to an `ArrayBuffer`. I've updated the repo with the solution. The trick was to `reader.readAsArrayBuffer(file);`, wait for a `load` event, and finally uploaded `reader.result` to Firebase. See `main.js` for the full solution.
+
+**Note:** I will delete the Firebase project and only leave the code. If you want to test this you will need to and update the Firebase credentials (and rebuild the `.apk` if you want to test in Android). I will also remove any cordova files and only leave the `www` folder.
+
+I will leave the error description below in case someone stumbles upon this.
+
+# The problem
+
 This is a Cordova test project to reproduce a bug when uploading files to Firebase using the WEB SDK on Android with an `<input type="file">`.
 
 ### Running the project

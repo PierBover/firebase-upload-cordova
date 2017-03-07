@@ -9,8 +9,7 @@ var App = {
 
 	onDeviceReady: function () {
 		UserInterface.initialize();
-		// App.initializeFirebase();
-		App.initializeFilepicker();
+		App.initializeFirebase();
 		UserInterface.log('App ready!');
 	},
 
@@ -25,11 +24,6 @@ var App = {
 		};
 		firebase.initializeApp(config);
 	},
-
-	initializeFilepicker: function () {
-		UserInterface.log('Initliazing Filepicker!');
-		this.filepickerClient = filestack.init('AQ6gQpRu3TkC41Imi2sRcz', { policy: 'policy', signature: 'signature' });
-	},
 };
 
 // ********************************************************************
@@ -38,16 +32,19 @@ var UserInterface = {
 	initialize: function () {
 		this.$log = $('#log');
 
-		// this.$inputFile = $('#input-file');
-		// this.$inputFile.on('change', function() {
-		// 	UserInterface.log('File for Firebase received!');
-		// 	FileController.uploadFirebase(this.files);
-		// });
+		this.$inputFile = $('#input-file');
+		this.$inputFile.on('change', function() {
+			var file = this.files[0];
+			var reader  = new FileReader();
 
-		this.$inputFilepicker = $('#input-filepicker');
-		this.$inputFilepicker.on('change', function() {
-			UserInterface.log('File for Filepicker received!');
-			FileController.uploadFilestack(this.files);
+		    reader.addEventListener("load", function () {
+				UserInterface.log('File for Firebase received!');
+				FileController.uploadFirebase(file,reader.result);
+		    }, false);
+
+		    if (file) {
+		    	reader.readAsArrayBuffer(file);
+		    }
 		});
 	},
 
@@ -64,10 +61,11 @@ var UserInterface = {
 // ********************************************************************
 
 var FileController = {
-	uploadFirebase: function (files) {
-		var file = files[0];
+	uploadFirebase: function (file, arrayBuffer) {
+
 		UserInterface.log('Uploading ' + file.name);
-		var uploadTask = firebase.storage().ref().child(file.name).put(file);
+
+		var uploadTask = firebase.storage().ref().child(file.name).put(arrayBuffer);
 
 		uploadTask.on('state_changed', snapshot => {
 			UserInterface.log('Uploading: ' + ((snapshot.bytesTransferred / snapshot.totalBytes) * 100) + '%' );
@@ -78,25 +76,6 @@ var FileController = {
 		}, () => {
 			UserInterface.log('Upload complete!');
 		})
-	},
-
-	uploadFilestack: function (files) {
-		var file = files[0];
-		console.log(file);
-		UserInterface.log('Uploading ' + file.name);
-
-		var options = {
-			onProgress: function (event) {
-				UserInterface.log('Uploading to Filestack...');
-			}
-		};
-
-		App.filepickerClient.upload(files[0], options).then(() => {
-			UserInterface.log('File uploaded to Filestack!');
-		}).catch((error) => {
-			console.log(error);
-			UserInterface.log(error.toString());
-		});
 	},
 }
 
